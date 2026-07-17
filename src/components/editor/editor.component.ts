@@ -6,6 +6,7 @@ import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk
 
 import { DatabaseService } from '../../services/database.service';
 import { ToolbarStateService } from '../../services/toolbar-state.service';
+import { SvgExportService } from '../../services/svg-export.service';
 import { Toolbar, ToolbarItem } from '../../models/toolbar.model';
 import { IconPickerComponent } from '../icon-picker/icon-picker.component';
 import { IconDisplayComponent } from '../icon-display/icon-display.component';
@@ -23,6 +24,7 @@ export class EditorComponent implements OnInit {
   private router: Router = inject(Router);
   private route: ActivatedRoute = inject(ActivatedRoute);
   private toolbarStateService = inject(ToolbarStateService);
+  private svgExportService = inject(SvgExportService);
 
   toolbarId: number | null = null;
   toolbarName = signal('');
@@ -148,5 +150,38 @@ export class EditorComponent implements OnInit {
     
     this.isSaving.set(false);
     this.router.navigate(['/dashboard']);
+  }
+
+  downloadJson(): void {
+    const toolbarData: Toolbar = {
+      name: this.toolbarName() || 'unnamed_toolbar',
+      description: this.toolbarDesc(),
+      items: this.toolbarItems(),
+      created_at: new Date(),
+    };
+    const dataStr = JSON.stringify(toolbarData, null, 2);
+    const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+    const fileName = `${(this.toolbarName() || 'unnamed_toolbar').replace(/\s+/g, '_')}.json`;
+
+    const link = document.createElement('a');
+    link.setAttribute('href', dataUri);
+    link.setAttribute('download', fileName);
+    link.click();
+  }
+
+  async downloadSvg(): Promise<void> {
+    try {
+      const toolbarData: Toolbar = {
+        name: this.toolbarName() || 'unnamed_toolbar',
+        description: this.toolbarDesc(),
+        items: this.toolbarItems(),
+        created_at: new Date(),
+      };
+      const svgString = await this.svgExportService.generateSvg(toolbarData);
+      this.svgExportService.downloadSvgFile(toolbarData, svgString);
+    } catch (error) {
+      console.error('Error generating SVG:', error);
+      alert('Failed to generate SVG representation of the toolbar.');
+    }
   }
 }

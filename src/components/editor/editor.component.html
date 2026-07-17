@@ -79,6 +79,14 @@
               </button>
             }
           </div>
+          <div class="mt-4 flex justify-end gap-2">
+            <button (click)="downloadJson()" class="px-3 py-1.5 bg-gray-600 text-white rounded-md text-sm hover:bg-gray-700 transition flex items-center gap-1.5" title="Export current design as JSON">
+              <i class="fas fa-file-code"></i> Export JSON
+            </button>
+            <button (click)="downloadSvg()" class="px-3 py-1.5 bg-purple-600 text-white rounded-md text-sm hover:bg-purple-700 transition flex items-center gap-1.5" title="Download current design as an optimized SVG">
+              <i class="fas fa-file-image"></i> Export SVG
+            </button>
+          </div>
         </div>
 
         <!-- JSON Preview -->

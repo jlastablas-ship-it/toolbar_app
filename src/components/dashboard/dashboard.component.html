@@ -67,9 +67,10 @@
                   </td>
                   <td class="p-4">
                     <div class="flex justify-end items-center gap-2">
-                      <button (click)="editToolbar(toolbar.id)" class="p-2 w-9 h-9 text-blue-400 hover:bg-blue-900/50 rounded-md transition"><i class="fas fa-pencil-alt"></i></button>
-                      <button (click)="exportToolbar(toolbar)" class="p-2 w-9 h-9 text-green-400 hover:bg-green-900/50 rounded-md transition"><i class="fas fa-download"></i></button>
-                      <button (click)="deleteToolbar(toolbar.id)" class="p-2 w-9 h-9 text-red-400 hover:bg-red-900/50 rounded-md transition"><i class="fas fa-trash"></i></button>
+                      <button (click)="editToolbar(toolbar.id)" class="p-2 w-9 h-9 text-blue-400 hover:bg-blue-900/50 rounded-md transition" title="Edit Toolbar"><i class="fas fa-pencil-alt"></i></button>
+                      <button (click)="exportToolbarJson(toolbar)" class="p-2 w-9 h-9 text-green-400 hover:bg-green-900/50 rounded-md transition" title="Export JSON"><i class="fas fa-file-code"></i></button>
+                      <button (click)="exportToolbarSvg(toolbar)" class="p-2 w-9 h-9 text-purple-400 hover:bg-purple-900/50 rounded-md transition" title="Export SVG"><i class="fas fa-file-image"></i></button>
+                      <button (click)="deleteToolbar(toolbar.id)" class="p-2 w-9 h-9 text-red-400 hover:bg-red-900/50 rounded-md transition" title="Delete Toolbar"><i class="fas fa-trash"></i></button>
                     </div>
                   </td>
                 </tr>
@@ -97,9 +98,10 @@
                 </div>
               </div>
               <div class="flex justify-end items-center gap-2 border-t border-base-300 pt-3">
-                <button (click)="editToolbar(toolbar.id)" class="p-2 w-9 h-9 text-blue-400 hover:bg-blue-900/50 rounded-md transition"><i class="fas fa-pencil-alt"></i></button>
-                <button (click)="exportToolbar(toolbar)" class="p-2 w-9 h-9 text-green-400 hover:bg-green-900/50 rounded-md transition"><i class="fas fa-download"></i></button>
-                <button (click)="deleteToolbar(toolbar.id)" class="p-2 w-9 h-9 text-red-400 hover:bg-red-900/50 rounded-md transition"><i class="fas fa-trash"></i></button>
+                <button (click)="editToolbar(toolbar.id)" class="p-2 w-9 h-9 text-blue-400 hover:bg-blue-900/50 rounded-md transition" title="Edit Toolbar"><i class="fas fa-pencil-alt"></i></button>
+                <button (click)="exportToolbarJson(toolbar)" class="p-2 w-9 h-9 text-green-400 hover:bg-green-900/50 rounded-md transition" title="Export JSON"><i class="fas fa-file-code"></i></button>
+                <button (click)="exportToolbarSvg(toolbar)" class="p-2 w-9 h-9 text-purple-400 hover:bg-purple-900/50 rounded-md transition" title="Export SVG"><i class="fas fa-file-image"></i></button>
+                <button (click)="deleteToolbar(toolbar.id)" class="p-2 w-9 h-9 text-red-400 hover:bg-red-900/50 rounded-md transition" title="Delete Toolbar"><i class="fas fa-trash"></i></button>
               </div>
             </div>
           }

@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { DatabaseService } from '../../services/database.service';
 import { GeminiService } from '../../services/gemini.service';
 import { ToolbarStateService } from '../../services/toolbar-state.service';
+import { SvgExportService } from '../../services/svg-export.service';
 import { Toolbar, ToolbarItem } from '../../models/toolbar.model';
 import { IconDisplayComponent } from '../icon-display/icon-display.component';
 
@@ -21,6 +22,7 @@ export class DashboardComponent implements OnInit {
   private router: Router = inject(Router);
   private geminiService = inject(GeminiService);
   private toolbarStateService = inject(ToolbarStateService);
+  private svgExportService = inject(SvgExportService);
 
   toolbars = signal<Toolbar[]>([]);
   viewMode = signal<'grid' | 'table'>('table');
@@ -61,7 +63,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  exportToolbar(toolbar: Toolbar): void {
+  exportToolbarJson(toolbar: Toolbar): void {
     const dataStr = JSON.stringify(toolbar, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
     const exportFileDefaultName = `${toolbar.name.replace(/\s+/g, '_')}.json`;
@@ -70,6 +72,16 @@ export class DashboardComponent implements OnInit {
     linkElement.setAttribute('href', dataUri);
     linkElement.setAttribute('download', exportFileDefaultName);
     linkElement.click();
+  }
+
+  async exportToolbarSvg(toolbar: Toolbar): Promise<void> {
+    try {
+      const svgString = await this.svgExportService.generateSvg(toolbar);
+      this.svgExportService.downloadSvgFile(toolbar, svgString);
+    } catch (error) {
+      console.error('Error generating SVG:', error);
+      alert('Failed to generate SVG representation of the toolbar.');
+    }
   }
   
   importToolbars(event: Event): void {
