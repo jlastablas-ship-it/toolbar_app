@@ -1,0 +1,42 @@
+
+<div class="space-y-6">
+  <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+    <h2 class="text-3xl font-bold">My Image Library</h2>
+    <input type="file" id="image-upload-input" class="hidden" (change)="onFileSelected($event)" accept="image/*">
+    <button (click)="triggerUpload()" [disabled]="isUploading()" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-indigo-700 transition disabled:bg-gray-500 disabled:cursor-not-allowed">
+      @if (isUploading()) {
+        <i class="fas fa-spinner fa-spin mr-2"></i>Uploading...
+      } @else {
+        <i class="fas fa-cloud-upload-alt mr-2"></i>Upload Image
+      }
+    </button>
+  </div>
+  
+  @if (isLoading()) {
+    <div class="flex justify-center items-center p-16">
+      <i class="fas fa-spinner fa-spin fa-3x text-primary"></i>
+    </div>
+  } @else {
+    @if (images().length === 0) {
+      <div class="text-center py-16 bg-base-200 rounded-lg">
+        <i class="fas fa-image fa-3x text-gray-500 mb-4"></i>
+        <h3 class="text-xl font-semibold">No Images Found</h3>
+        <p class="text-gray-400">Upload your custom icons to use them in toolbars.</p>
+      </div>
+    } @else {
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
+        @for (image of images(); track image.id) {
+          <div class="relative group bg-base-200 p-2 rounded-lg aspect-square flex items-center justify-center">
+            <img [src]="image.data" [alt]="image.name" class="max-w-full max-h-full object-contain">
+            <div class="absolute inset-0 bg-black/70 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <p class="text-xs text-white text-center p-1 truncate w-full">{{ image.name }}</p>
+              <button (click)="deleteImage(image.id)" class="mt-2 w-8 h-8 bg-red-600 text-white rounded-full hover:bg-red-700 transition">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

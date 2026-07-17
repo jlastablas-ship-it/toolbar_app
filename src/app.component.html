@@ -1,0 +1,69 @@
+
+<div class="flex h-screen bg-base-100 text-gray-200">
+  <!-- Sidebar -->
+  <aside 
+    class="flex flex-col bg-secondary transition-all duration-300 ease-in-out"
+    [class.w-64]="isSidebarOpen()"
+    [class.w-0]="!isSidebarOpen()"
+    [class.p-4]="isSidebarOpen()"
+    [class.p-0]="!isSidebarOpen()">
+    
+    <div class="flex items-center justify-between" [class.invisible]="!isSidebarOpen()">
+      <h1 class="text-2xl font-bold text-white whitespace-nowrap">
+        <i class="fas fa-tools mr-2 text-primary"></i>ToolbarGen Pro
+      </h1>
+    </div>
+
+    <nav class="mt-8 flex-1" [class.invisible]="!isSidebarOpen()">
+      <ul class="space-y-2">
+        <li>
+          <a routerLink="/dashboard" routerLinkActive="bg-primary text-white" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-base-200 transition-colors whitespace-nowrap">
+            <i class="w-5 text-center fas fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/editor" routerLinkActive="bg-primary text-white" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-base-200 transition-colors whitespace-nowrap">
+            <i class="w-5 text-center fas fa-plus-circle"></i>
+            <span>New Toolbar</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/images" routerLinkActive="bg-primary text-white" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-base-200 transition-colors whitespace-nowrap">
+            <i class="w-5 text-center fas fa-images"></i>
+            <span>Image Library</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main content -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <!-- Header -->
+    <header class="bg-secondary p-4 flex items-center gap-4 shadow-md z-10">
+      <button (click)="toggleSidebar()" class="p-2 rounded-full hover:bg-base-200 focus:outline-none focus:ring-2 focus:ring-primary">
+        <i class="fas fa-bars"></i>
+      </button>
+      <h2 class="text-xl font-semibold">Toolbar Management</h2>
+    </header>
+
+    <!-- Content Area -->
+    <main class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+
+  <!-- Floating Navigation Controls -->
+  <div class="fixed bottom-5 right-5 z-50 flex flex-col gap-2">
+    <button (click)="goBack()" class="w-12 h-12 bg-primary text-white rounded-full shadow-lg flex items-center justify-center hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-base-100 focus:ring-primary">
+      <i class="fas fa-arrow-left"></i>
+    </button>
+     <button (click)="refresh()" class="w-12 h-12 bg-primary text-white rounded-full shadow-lg flex items-center justify-center hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-base-100 focus:ring-primary">
+      <i class="fas fa-sync-alt"></i>
+    </button>
+    <button (click)="goForward()" class="w-12 h-12 bg-primary text-white rounded-full shadow-lg flex items-center justify-center hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-base-100 focus:ring-primary">
+      <i class="fas fa-arrow-right"></i>
+    </button>
+  </div>
+</div>

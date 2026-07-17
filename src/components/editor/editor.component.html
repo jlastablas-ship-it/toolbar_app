@@ -1,0 +1,96 @@
+
+@if (isLoading()) {
+  <div class="flex justify-center items-center p-16">
+    <i class="fas fa-spinner fa-spin fa-3x text-primary"></i>
+  </div>
+} @else {
+  <div class="space-y-6">
+    <div class="flex justify-between items-center">
+      <h2 class="text-3xl font-bold">{{ toolbarId ? 'Edit Toolbar' : 'Create New Toolbar' }}</h2>
+      <button (click)="saveToolbar()" [disabled]="isSaving()" class="px-6 py-2 bg-primary text-white rounded-md hover:bg-indigo-700 transition disabled:bg-gray-500 disabled:cursor-not-allowed">
+        @if (isSaving()) {
+          <i class="fas fa-spinner fa-spin mr-2"></i>Saving...
+        } @else {
+          <i class="fas fa-save mr-2"></i>Save
+        }
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Left Panel: Editor -->
+      <div class="bg-base-200 p-6 rounded-lg shadow-lg space-y-6">
+        <!-- Toolbar Metadata -->
+        <div class="space-y-4">
+          <div>
+            <label for="toolbarName" class="block text-sm font-medium text-gray-300 mb-1">Toolbar Name</label>
+            <input type="text" id="toolbarName" [(ngModel)]="toolbarName" class="w-full bg-base-300 border border-gray-600 rounded-md px-3 py-2 focus:ring-primary focus:border-primary" placeholder="e.g., Main Actions">
+          </div>
+          <div>
+            <label for="toolbarDesc" class="block text-sm font-medium text-gray-300 mb-1">Description</label>
+            <textarea id="toolbarDesc" [(ngModel)]="toolbarDesc" rows="3" class="w-full bg-base-300 border border-gray-600 rounded-md px-3 py-2 focus:ring-primary focus:border-primary" placeholder="A short description of this toolbar"></textarea>
+          </div>
+        </div>
+
+        <!-- Toolbar Items -->
+        <div class="space-y-4">
+          <div class="flex justify-between items-center">
+            <h3 class="text-xl font-semibold">Toolbar Items</h3>
+            <button (click)="addNewItem()" class="px-3 py-1 bg-green-600 text-white rounded-md text-sm hover:bg-green-700 transition">
+              <i class="fas fa-plus mr-1"></i> Add Item
+            </button>
+          </div>
+          
+          <div cdkDropList (cdkDropListDropped)="drop($event)" class="space-y-2">
+            @for (item of toolbarItems(); track item.id; let i = $index) {
+              <div cdkDrag class="bg-base-100 p-3 rounded-md flex items-center gap-4 group">
+                 <div cdkDragHandle class="cursor-move text-gray-500 hover:text-white"><i class="fas fa-grip-vertical"></i></div>
+                 <button (click)="editItem(item)" class="p-2 rounded-md hover:bg-base-300 w-12 h-12 flex items-center justify-center">
+                   <app-icon-display [iconType]="item.iconType" [iconCode]="item.iconCode" size="lg" />
+                 </button>
+                 <div class="flex-1 grid grid-cols-2 gap-x-4 gap-y-2">
+                   <input type="text" [(ngModel)]="item.tooltip" class="col-span-2 md:col-span-1 bg-base-300 border border-gray-600 rounded-md px-2 py-1 text-sm" placeholder="Tooltip">
+                   <input type="text" [(ngModel)]="item.action" class="col-span-2 md:col-span-1 bg-base-300 border border-gray-600 rounded-md px-2 py-1 text-sm" placeholder="Action/Function">
+                 </div>
+                 <button (click)="removeItem(item.id)" class="text-gray-500 hover:text-red-500 transition"><i class="fas fa-times-circle"></i></button>
+              </div>
+            } @empty {
+                <div class="text-center py-8 border-2 border-dashed border-gray-600 rounded-lg">
+                    <p class="text-gray-400">No items yet. Click "Add Item" to start.</p>
+                </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel: Preview -->
+      <div class="space-y-6">
+          <!-- Live Preview -->
+        <div class="bg-base-200 p-6 rounded-lg shadow-lg">
+          <h3 class="text-xl font-semibold mb-4 border-b border-base-300 pb-2">Live Preview</h3>
+          <div class="bg-secondary p-3 rounded-md flex items-center justify-center gap-2">
+            @for (item of toolbarItems(); track item.id) {
+              <button class="w-12 h-12 bg-base-100 rounded-md flex items-center justify-center hover:bg-primary transition-colors relative group">
+                <app-icon-display [iconType]="item.iconType" [iconCode]="item.iconCode" size="xl" />
+                @if(item.tooltip) {
+                  <span class="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap bg-black text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                    {{ item.tooltip }}
+                  </span>
+                }
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- JSON Preview -->
+        <div class="bg-base-200 p-6 rounded-lg shadow-lg">
+          <h3 class="text-xl font-semibold mb-4 border-b border-base-300 pb-2">JSON Output</h3>
+          <pre class="w-full bg-secondary p-4 rounded-md text-sm text-green-300 overflow-auto max-h-96"><code>{{ jsonPreview() }}</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+@if (isPickerOpen()) {
+  <app-icon-picker (iconSelected)="onIconSelected($event)" (closeModal)="closePicker()"></app-icon-picker>
+}

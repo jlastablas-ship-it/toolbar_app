@@ -1,0 +1,8 @@
+{
+  "name": "ToolbarGen Pro",
+  "description": "A Progressive Web App to create, manage, and export custom toolbars. This application allows users to build toolbars using various icon libraries or by uploading their own images, providing a live preview and JSON export functionality. It is designed to be fully functional offline.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
